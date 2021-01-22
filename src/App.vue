@@ -5,7 +5,15 @@
   </div>
   <div class="container">
     <!-- <transition enter-to-class="some-class" enter-active-class="..."> -->
-    <transition name="para">
+    <transition
+      name="para"
+      @before-enter="beforeEnter"
+      @enter="enter"
+      @after-enter="afterEnter"
+      @before-leave="beforeLeave"
+      @leave="leave"
+      @after-leave="afterLeave"
+    >
       <p v-if="paraIsVisible">This is sometimes visible...</p>
     </transition>
     <button @click="toggleParagraph">Toggle Paragraph</button>
@@ -36,6 +44,33 @@ export default {
     };
   },
   methods: {
+    beforeEnter(element) {
+      // the method name is OPTIONAL
+      console.log('beforeEnter');
+      console.log(element);
+    },
+    enter(element) {
+      // the method name is OPTIONAL
+      console.log('enter');
+      console.log(element);
+    },
+    afterEnter(element) {
+      console.log('afterEnter');
+      console.log(element);
+    },
+    beforeLeave(element) {
+      // the method name is OPTIONAL
+      console.log('beforeLeave');
+      console.log(element);
+    },
+    leave(element) {
+      console.log('beforeLeave');
+      console.log(element);
+    },
+    afterLeave(element) {
+      console.log('beforeLeave');
+      console.log(element);
+    },
     showUsers() {
       this.usersAreVisible = true;
     },
@@ -111,7 +146,7 @@ button:active {
 } */
 
 .para-enter-active {
-  animation: slide-scale 0.3s ease-out;
+  animation: slide-scale 2s ease-out;
 }
 
 /* .para-enter-to {
@@ -126,7 +161,7 @@ button:active {
 
 .para-leave-active {
   /* transition: all 0.3s ease-in; */
-  animation: slide-scale 0.3s ease-out;
+  animation: slide-scale 2s ease-out;
 }
 
 /* .para-leave-to {
