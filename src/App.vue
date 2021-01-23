@@ -13,6 +13,8 @@
       @before-leave="beforeLeave"
       @leave="leave"
       @after-leave="afterLeave"
+      @enter-cancelled="enterCancelled"
+      @leave-cancelled="leaveCancelled"
     >
       <p v-if="paraIsVisible">This is sometimes visible...</p>
     </transition>
@@ -40,19 +42,39 @@ export default {
       animatedBlock: false,
       dialogIsVisible: false,
       paraIsVisible: false,
-      usersAreVisible: false
+      usersAreVisible: false,
+      enterInterval: null,
+      leaveInterval: null
     };
   },
   methods: {
+    enterCancelled(element) {
+      console.log(element);
+      clearInterval(this.enterInterval);
+    },
+    leaveCancelled(element) {
+      console.log(element);
+      clearInterval(this.leaveInterval);
+    },
     beforeEnter(element) {
       // the method name is OPTIONAL
       console.log('beforeEnter');
       console.log(element);
+      element.style.opacity = 0;
     },
-    enter(element) {
+    enter(element, done) {
       // the method name is OPTIONAL
       console.log('enter');
       console.log(element);
+      let round = 1;
+      this.enterInterval = setInterval(() => {
+        element.style.opacity = round * 0.01;
+        round++;
+        if (round > 100) {
+          clearInterval(this.enterInterval);
+          done();
+        }
+      }, 20);
     },
     afterEnter(element) {
       console.log('afterEnter');
@@ -62,13 +84,23 @@ export default {
       // the method name is OPTIONAL
       console.log('beforeLeave');
       console.log(element);
+      element.style.opacity = 1;
     },
-    leave(element) {
-      console.log('beforeLeave');
+    leave(element, done) {
+      console.log('leave');
       console.log(element);
+      let round = 1;
+      this.leaveInterval = setInterval(() => {
+        element.style.opacity = 1 - round * 0.01;
+        round++;
+        if (round > 100) {
+          clearInterval(this.leaveInterval);
+          done();
+        }
+      }, 20);
     },
     afterLeave(element) {
-      console.log('beforeLeave');
+      console.log('afterLeave');
       console.log(element);
     },
     showUsers() {
@@ -139,35 +171,6 @@ button:active {
   /* transform: translateX(-150px); */
   animation: slide-fade 0.3s ease-out forwards;
 }
-
-/* .v-enter-from {
-  opacity: 0;
-  transform: translateY(-30px);
-} */
-
-.para-enter-active {
-  animation: slide-scale 2s ease-out;
-}
-
-/* .para-enter-to {
-  opacity: 1;
-  transform: translateY(0);
-} */
-
-/* .para-leave-from {
-  opacity: 1;
-  transform: translateY(0);
-} */
-
-.para-leave-active {
-  /* transition: all 0.3s ease-in; */
-  animation: slide-scale 2s ease-out;
-}
-
-/* .para-leave-to {
-  opacity: 0;
-  transform: translateX(50px);
-} */
 
 .fade-button-enter-from,
 .fade-button-leave-to {
