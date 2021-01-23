@@ -65,10 +65,15 @@ li:hover {
 
 .user-list-leave-active {
   transition: all 1s ease-in;
+  position: absolute;
 }
 
 .user-list-leave-to {
   opacity: 0;
   transform: translateX(30px);
+}
+
+.user-list-move {
+  transition: transform 0.8s ease;
 }
 </style>
