@@ -158,13 +158,9 @@ button:active {
   opacity: 1;
 }
 
-/* .route-enter-from {
-} */
 .route-enter-active {
   animation: slide-scale 0.4s ease-out;
 }
-/* .route-enter-to {
-} */
 
 .route-leave-active {
   animation: slide-scale 0.4s ease-in;

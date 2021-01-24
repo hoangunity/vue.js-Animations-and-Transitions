@@ -23,5 +23,3 @@ app.use(router);
 router.isReady().then(function() {
   app.mount('#app');
 });
-
-
