@@ -1,50 +1,13 @@
 <template>
-  <div class="container">
-    <users-list></users-list>
-  </div>
-  <div class="container">
-    <div class="block" :class="{ animate: animatedBlock }"></div>
-    <button @click="animateBlock">Animate</button>
-  </div>
-  <div class="container">
-    <!-- <transition enter-to-class="some-class" enter-active-class="..."> -->
-    <transition
-      :css="false"
-      @before-enter="beforeEnter"
-      @enter="enter"
-      @after-enter="afterEnter"
-      @before-leave="beforeLeave"
-      @leave="leave"
-      @after-leave="afterLeave"
-      @enter-cancelled="enterCancelled"
-      @leave-cancelled="leaveCancelled"
-    >
-      <p v-if="paraIsVisible">This is sometimes visible...</p>
-    </transition>
-    <button @click="toggleParagraph">Toggle Paragraph</button>
-  </div>
-  <div class="container">
+  <router-view v-slot="slotProps">
     <transition name="fade-button" mode="out-in">
-      <button @click="showUsers" v-if="!usersAreVisible">Show Users</button>
-      <button @click="hideUsers" v-else>Hide Users</button>
+      <component :is="slotProps.Component"></component>
     </transition>
-  </div>
-  <base-modal @close="hideDialog" :open="dialogIsVisible">
-    <p>This is a test dialog!</p>
-    <button @click="hideDialog">Close it!</button>
-  </base-modal>
-  <div class="container">
-    <button @click="showDialog">Show Dialog</button>
-  </div>
+  </router-view>
 </template>
 
 <script>
-import UsersList from './components/UsersList.vue';
-
 export default {
-  components: {
-    UsersList
-  },
   data() {
     return {
       animatedBlock: false,
@@ -56,27 +19,25 @@ export default {
     };
   },
   methods: {
-    enterCancelled(element) {
-      console.log(element);
+    enterCancelled(el) {
+      console.log(el);
       clearInterval(this.enterInterval);
     },
-    leaveCancelled(element) {
-      console.log(element);
+    leaveCancelled(el) {
+      console.log(el);
       clearInterval(this.leaveInterval);
     },
-    beforeEnter(element) {
-      // the method name is OPTIONAL
+    beforeEnter(el) {
       console.log('beforeEnter');
-      console.log(element);
-      element.style.opacity = 0;
+      console.log(el);
+      el.style.opacity = 0;
     },
-    enter(element, done) {
-      // the method name is OPTIONAL
+    enter(el, done) {
       console.log('enter');
-      console.log(element);
+      console.log(el);
       let round = 1;
       this.enterInterval = setInterval(() => {
-        element.style.opacity = round * 0.01;
+        el.style.opacity = round * 0.01;
         round++;
         if (round > 100) {
           clearInterval(this.enterInterval);
@@ -84,22 +45,21 @@ export default {
         }
       }, 20);
     },
-    afterEnter(element) {
+    afterEnter(el) {
       console.log('afterEnter');
-      console.log(element);
+      console.log(el);
     },
-    beforeLeave(element) {
-      // the method name is OPTIONAL
+    beforeLeave(el) {
       console.log('beforeLeave');
-      console.log(element);
-      element.style.opacity = 1;
+      console.log(el);
+      el.style.opacity = 1;
     },
-    leave(element, done) {
+    leave(el, done) {
       console.log('leave');
-      console.log(element);
+      console.log(el);
       let round = 1;
       this.leaveInterval = setInterval(() => {
-        element.style.opacity = 1 - round * 0.01;
+        el.style.opacity = 1 - round * 0.01;
         round++;
         if (round > 100) {
           clearInterval(this.leaveInterval);
@@ -107,9 +67,9 @@ export default {
         }
       }, 20);
     },
-    afterLeave(element) {
+    afterLeave(el) {
       console.log('afterLeave');
-      console.log(element);
+      console.log(el);
     },
     showUsers() {
       this.usersAreVisible = true;
@@ -198,15 +158,29 @@ button:active {
   opacity: 1;
 }
 
+/* .route-enter-from {
+} */
+.route-enter-active {
+  animation: slide-scale 0.4s ease-out;
+}
+/* .route-enter-to {
+} */
+
+.route-leave-active {
+  animation: slide-scale 0.4s ease-in;
+}
+
 @keyframes slide-scale {
   0% {
     transform: translateX(0) scale(1);
   }
+
   70% {
     transform: translateX(-120px) scale(1.1);
   }
+
   100% {
-    transform: translate(-150px) scale(1);
+    transform: translateX(-150px) scale(1);
   }
 }
 </style>

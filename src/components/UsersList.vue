@@ -1,8 +1,6 @@
 <template>
   <transition-group tag="ul" name="user-list">
-    <li v-for="user in users" :key="user" @click="removeUser(user)">
-      {{ user }}
-    </li>
+    <li v-for="user in users" :key="user" @click="removeUser(user)">{{ user }}</li>
   </transition-group>
   <div>
     <input type="text" ref="userNameInput" />
@@ -14,19 +12,18 @@
 export default {
   data() {
     return {
-      users: ['Hoàng', 'Phương', 'Duy', 'Minh', 'Yến']
+      users: ['Max', 'Manu', 'Julie', 'Angela', 'Michael'],
     };
   },
   methods: {
     addUser() {
       const enteredUserName = this.$refs.userNameInput.value;
       this.users.unshift(enteredUserName);
-      this.$refs.userNameInput.value = '';
     },
     removeUser(user) {
-      this.users = this.users.filter(usr => usr !== user);
-    }
-  }
+      this.users = this.users.filter((usr) => usr !== user);
+    },
+  },
 };
 </script>
 
@@ -36,16 +33,10 @@ ul {
   margin: 1rem 0;
   padding: 0;
 }
-
 li {
   border: 1px solid #ccc;
   padding: 1rem;
   text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease-in;
-}
-li:hover {
-  background-color: aqua;
 }
 
 .user-list-enter-from {

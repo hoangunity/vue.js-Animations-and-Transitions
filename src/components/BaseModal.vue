@@ -10,7 +10,7 @@
 <script>
 export default {
   props: ['open'],
-  emits: ['close']
+  emits: ['close'],
 };
 </script>
 
@@ -56,7 +56,7 @@ dialog {
 
   to {
     opacity: 1;
-    transform: translateY(0px) scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 </style>
